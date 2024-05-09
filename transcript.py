@@ -1,15 +1,14 @@
 import whisper
-import datetime
+from datetime import timedelta
 import glob, sys
 
 
-def formatter_time(time_int):
-    time_str = str(datetime.timedelta(seconds=time_int))
-    if "." not in time_str:
-        time_str += ".000"
-    else:
-        time_str = time_str[:-3]
-    return time_str
+def formatter_time(seconds):
+    td = timedelta(seconds=seconds)
+    hours, remainder = divmod(td.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    microseconds = td.microseconds
+    return f"{hours:02}:{minutes:02}:{seconds:02}.{microseconds//1000:03}"
 
 
 voice_files = glob.glob("*.mp3")
